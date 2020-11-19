@@ -70,5 +70,12 @@ namespace MuNyi.Web.Controllers
             }
             await projectService.DeleteProject(id);
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ProjectDetailDto> GetProjectDetails([FromRoute] Guid id)
+        {
+            return
+        }
     }
 }

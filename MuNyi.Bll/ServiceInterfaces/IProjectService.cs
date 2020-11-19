@@ -13,5 +13,6 @@ namespace MuNyi.Bll.ServiceInterfaces
         public Task<IEnumerable<ProjectDto>> GetAllProjectsAsync();
         public Task<IEnumerable<ProjectDto>> SearchProjectsAsync(SearchProjectDto searchData);
         public Task DeleteProject(Guid Id);
+        public Task<ProjectDetailDto> GetProjectByIdAsync(Guid id);
     }
 }
