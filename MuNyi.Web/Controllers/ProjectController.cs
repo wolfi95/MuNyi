@@ -59,5 +59,16 @@ namespace MuNyi.Web.Controllers
                 PageSize = searchData.PageSize
             };
         }
+
+        [HttpDelete]
+        [Route("{id}/delete")]
+        public async Task DeleteProject([FromRoute] Guid id)
+        {
+            if(id == Guid.Empty)
+            {
+                throw new ArgumentNullException("Id nem lehet üres");
+            }
+            await projectService.DeleteProject(id);
+        }
     }
 }
