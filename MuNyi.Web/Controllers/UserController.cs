@@ -15,7 +15,7 @@ namespace MuNyi.Web.Controllers
 {
     [Route("user")]
     [ApiController]
-    public class UserController
+    public class UserController : Controller
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
