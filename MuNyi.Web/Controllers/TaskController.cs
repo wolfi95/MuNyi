@@ -25,16 +25,6 @@ namespace MuNyi.Web.Controllers
             this.userManager = userManager;            
         }
 
-        /*[HttpGet]
-        public async Task<string> GetAllProjects([FromRoute] Guid projectId)
-        {
-            if (projectId == Guid.Empty)
-            {
-                throw new ArgumentNullException("Projekt azonosító nem lehet üres");
-            }
-            return "asd";
-        }*/
-
         [HttpPost]
         public async Task NewTask([FromRoute] Guid projectId, NewTaskDto newTaskData)
         {
