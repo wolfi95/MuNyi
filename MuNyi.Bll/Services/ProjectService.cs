@@ -39,12 +39,26 @@ namespace MuNyi.Bll.Services
 
         public async System.Threading.Tasks.Task DeleteProject(Guid Id)
         {
-            var proj = context.Projects.FirstOrDefault(x => x.Id == Id);
+            var proj = context.Projects.Include(x => x.Tasks.Select(y => y.WorkItems)).FirstOrDefault(x => x.Id == Id);
 
             if(proj == null)
             {
                 throw new ArgumentException("Nem található projekt ezzel az azonosítóval.");
             }
+
+            using(var transation = context.Database.BeginTransaction())
+            {
+                foreach(var task in proj.Tasks)
+                {
+                    context.WorkItems.RemoveRange(task.WorkItems);                    
+                }
+                context.Tasks.RemoveRange(proj.Tasks);
+                context.Remove(proj);
+
+                await context.SaveChangesAsync();
+                transation.Commit();
+            }
+            
             context.Projects.Remove(proj);
             await context.SaveChangesAsync();
         }
