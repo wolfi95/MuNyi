@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MuNyi.Dal\MuNyi.Dal.csproj" />
+    <ProjectReference Include="..\MuNyi.Dto\MuNyi.Dto.csproj" />
   </ItemGroup>
 
 </Project>

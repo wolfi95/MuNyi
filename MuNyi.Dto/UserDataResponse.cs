@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MuNyi.Dal.Dto
+namespace MuNyi.Dto
 {
     public class UserDataResponse
     {

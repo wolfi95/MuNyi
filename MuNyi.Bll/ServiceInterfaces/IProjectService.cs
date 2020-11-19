@@ -1,5 +1,5 @@
-﻿using MuNyi.Dal.Dtos;
-using MuNyi.Dal.Entities.Authentication;
+﻿using MuNyi.Dal.Entities.Authentication;
+using MuNyi.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +10,7 @@ namespace MuNyi.Bll.ServiceInterfaces
     public interface IProjectService
     {
         public Task CreateNewProjectAsync(NewProjectDto newProject, User user);
+        public Task<IEnumerable<ProjectDto>> GetAllProjectsAsync();
+        public Task<IEnumerable<ProjectDto>> SearchProjectsAsync(SearchProjectDto searchData);
     }
 }

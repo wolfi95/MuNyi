@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MuNyi.Dal.Dtos
+namespace MuNyi.Dto
 {
     public class NewProjectDto
     {

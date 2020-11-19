@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MuNyi.Dal.Entities.Authentication;
+using MuNyi.Dto;
 using MuNyi.Web.Authentication;
-using MuNyi.Dal.Dto;
 
 namespace MuNyi.Web.Controllers
 {
