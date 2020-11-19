@@ -110,7 +110,23 @@ namespace MuNyi.Bll.Services
             };
         }
 
-        public async Task<IEnumerable<ProjectDto>> SearchProjectsAsync(SearchProjectDto searchData)
+        public async Task<double> GetProjectWorkAsync(Guid id)
+        {
+            var project = await context.Projects.Include(x => x.Tasks.Select(y => y.WorkItems)).FirstOrDefaultAsync(x => x.Id == id);
+            if (project == null)
+            {
+                throw new ArgumentException("Nem található projekt.");
+            }
+
+            double loggedHours = 0;
+            foreach (var task in project.Tasks)
+            {
+                loggedHours += task.WorkItems.Sum(x => x.Time);
+            }
+            return loggedHours;
+        }
+
+            public async Task<IEnumerable<ProjectDto>> SearchProjectsAsync(SearchProjectDto searchData)
         {
             var projectsQuery = context.Projects.Include(x => x.CreatedBy).AsQueryable();
 

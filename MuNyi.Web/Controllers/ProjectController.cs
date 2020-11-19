@@ -75,7 +75,22 @@ namespace MuNyi.Web.Controllers
         [Route("{id}")]
         public async Task<ProjectDetailDto> GetProjectDetails([FromRoute] Guid id)
         {
-            return
+            if(id == Guid.Empty)
+            {
+                throw new ArgumentNullException("A projekt azonosítója nem lehet üres.");
+            }
+            return await projectService.GetProjectByIdAsync(id);
+        }
+
+        [HttpGet]
+        [Route("{id}/work")]
+        public async Task<double> GetProjectWorkTime([FromRoute] Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException("A projekt azonosítója nem lehet üres.");
+            }
+            return await projectService.GetProjectWorkAsync(id);
         }
     }
 }
