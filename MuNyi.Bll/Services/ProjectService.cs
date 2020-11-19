@@ -22,7 +22,7 @@ namespace MuNyi.Bll.Services
         }
         public async System.Threading.Tasks.Task CreateNewProjectAsync(NewProjectDto newProject, User user)
         {
-            if((await context.Projects.FirstOrDefaultAsync(x => x.Name == newProject.ProjectName)) != null)
+            if ((await context.Projects.FirstOrDefaultAsync(x => x.Name == newProject.ProjectName)) != null)
             {
                 throw new ArgumentException("Már létezik projekt ezzel a névvel!");
             }
@@ -41,16 +41,16 @@ namespace MuNyi.Bll.Services
         {
             var proj = context.Projects.Include(x => x.Tasks.Select(y => y.WorkItems)).FirstOrDefault(x => x.Id == Id);
 
-            if(proj == null)
+            if (proj == null)
             {
                 throw new ArgumentException("Nem található projekt ezzel az azonosítóval.");
             }
 
-            using(var transation = context.Database.BeginTransaction())
+            using (var transation = context.Database.BeginTransaction())
             {
-                foreach(var task in proj.Tasks)
+                foreach (var task in proj.Tasks)
                 {
-                    context.WorkItems.RemoveRange(task.WorkItems);                    
+                    context.WorkItems.RemoveRange(task.WorkItems);
                 }
                 context.Tasks.RemoveRange(proj.Tasks);
                 context.Remove(proj);
@@ -58,7 +58,7 @@ namespace MuNyi.Bll.Services
                 await context.SaveChangesAsync();
                 transation.Commit();
             }
-            
+
             context.Projects.Remove(proj);
             await context.SaveChangesAsync();
         }
@@ -78,13 +78,13 @@ namespace MuNyi.Bll.Services
         public async Task<ProjectDetailDto> GetProjectByIdAsync(Guid id)
         {
             var project = await context.Projects.Include(x => x.Tasks.Select(y => y.WorkItems)).Include(x => x.CreatedBy).FirstOrDefaultAsync(x => x.Id == id);
-            if(project == null)
+            if (project == null)
             {
                 throw new ArgumentException("Nem található projekt.");
             }
 
             double loggedHours = 0;
-            foreach(var task in project.Tasks)
+            foreach (var task in project.Tasks)
             {
                 loggedHours += task.WorkItems.Sum(x => x.Time);
             }
@@ -126,7 +126,7 @@ namespace MuNyi.Bll.Services
             return loggedHours;
         }
 
-            public async Task<IEnumerable<ProjectDto>> SearchProjectsAsync(SearchProjectDto searchData)
+        public async Task<IEnumerable<ProjectDto>> SearchProjectsAsync(SearchProjectDto searchData)
         {
             var projectsQuery = context.Projects.Include(x => x.CreatedBy).AsQueryable();
 
@@ -192,15 +192,14 @@ namespace MuNyi.Bll.Services
             //Page number starts from 1, first page shouldnt skip any
             projectsQuery.Skip((searchData.PageNumber - 1) * searchData.PageSize).Take(searchData.PageSize);
 
-            return await projectsQuery.Select(x => new ProjectDto 
-                                                { 
-                                                    CreatedBy = x.CreatedBy.Name,
-                                                    CreatedTime =x.CreatedTime,
-                                                    Description = x.Description,
-                                                    Id = x.Id,
-                                                    Name = x.Name
-                                                }
-                                             ).ToListAsync();
+            return await projectsQuery.Select(x => new ProjectDto
+            {
+                CreatedBy = x.CreatedBy.Name,
+                CreatedTime = x.CreatedTime,
+                Description = x.Description,
+                Id = x.Id,
+                Name = x.Name
+            }).ToListAsync();
         }
     }
 }
