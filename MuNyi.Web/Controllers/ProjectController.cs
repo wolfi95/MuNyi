@@ -14,7 +14,7 @@ namespace MuNyi.Web.Controllers
 {
     [Route("project")]
     [ApiController]
-    [Authorize(UserRoles.Administrator)]
+    [Authorize(Roles = UserRoles.Administrator)]
     public class ProjectController : Controller
     {
         private readonly IProjectService projectService;
