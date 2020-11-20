@@ -83,6 +83,7 @@ namespace MuNyi.Web
 
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<IWorkService, WorkService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

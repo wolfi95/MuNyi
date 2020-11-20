@@ -17,10 +17,12 @@ namespace MuNyi.Web.Controllers
     public class TaskController : Controller
     {
         private readonly ITaskService taskService;
+        private readonly IWorkService workService;
         private readonly UserManager<User> userManager;
 
-        public TaskController(ITaskService taskService, UserManager<User> userManager)
+        public TaskController(ITaskService taskService, UserManager<User> userManager, IWorkService workService)
         {
+            this.workService = workService;
             this.taskService = taskService;
             this.userManager = userManager;            
         }
@@ -116,9 +118,81 @@ namespace MuNyi.Web.Controllers
             }
             if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("A deladat azonosítója nem lehet üres.");
+                throw new ArgumentNullException("A feladat azonosítója nem lehet üres.");
             }
             return await taskService.GetTaskWorkAsync(projectId, id);
+        }
+
+        [HttpGet]
+        [Route("{id}/workItems")]
+        public async Task<IEnumerable<WorkDto>> GetTaskWorkItems([FromRoute] Guid projectId, [FromRoute] Guid id)
+        {
+            if (projectId == Guid.Empty)
+            {
+                throw new ArgumentNullException("Projekt azonosító nem lehet üres");
+            }
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException("A feladat azonosítója nem lehet üres.");
+            }
+
+            return await workService.GetTaskWorkItemsAsync(projectId, id);
+        }
+
+        [HttpGet]
+        [Route("{id}/workItems/search")]
+        public async Task<PagedData<WorkDto>> SearchTaskWorkItems([FromRoute] Guid projectId, [FromRoute] Guid id, SearchWorkItemDto searchData)
+        {
+            if (projectId == Guid.Empty)
+            {
+                throw new ArgumentNullException("Projekt azonosító nem lehet üres");
+            }
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException("A feladat azonosítója nem lehet üres.");
+            }
+
+            return new PagedData<WorkDto>{
+                Data = (await workService.SearchTaskWorkItemsAsync(projectId, id, searchData)),
+                PageNumber = searchData.PageNumber,
+                PageSize = searchData.PageSize,
+            };
+        }
+
+        [HttpPost]
+        [Route("{id}/workItems/new")]
+        public async Task CreateNewWorkItem([FromRoute] Guid projectId, [FromRoute] Guid id, NewWorkItemDto newWorkItemData)
+        {
+            if (projectId == Guid.Empty)
+            {
+                throw new ArgumentNullException("Projekt azonosító nem lehet üres");
+            }
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException("A feladat azonosítója nem lehet üres.");
+            }
+
+            await workService.CreateNewWorkItem(projectId, id, newWorkItemData, (await userManager.GetUserAsync(User)));
+        }
+
+        [HttpDelete]
+        [Route("{id}/workItems/{workId}")]
+        public async Task DeleteWorkItem([FromRoute] Guid projectId, [FromRoute] Guid id, [FromRoute]Guid workId)
+        {
+            if (projectId == Guid.Empty)
+            {
+                throw new ArgumentNullException("Projekt azonosító nem lehet üres");
+            }
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException("A feladat azonosítója nem lehet üres.");
+            }
+            if (workId == Guid.Empty)
+            {
+                throw new ArgumentNullException("A munkaidő azonosítója nem lehet üres.");
+            }
+
+            await workService.DeleteWorkItem(projectId, id, workId, (await userManager.GetUserAsync(User)));
         }
     }
 }
