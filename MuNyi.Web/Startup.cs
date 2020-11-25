@@ -84,15 +84,26 @@ namespace MuNyi.Web
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IWorkService, WorkService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             if (!roleManager.RoleExistsAsync(UserRoles.User).Result)
                 roleManager.CreateAsync(new IdentityRole { Name = UserRoles.User }).Wait();
             if (!roleManager.RoleExistsAsync(UserRoles.Administrator).Result)
                 roleManager.CreateAsync(new IdentityRole { Name = UserRoles.Administrator }).Wait();
+
+
+            if(!(userManager.FindByEmailAsync("adminemail@smth.com").Result == null))
+            {
+                userManager.CreateAsync(new User
+                {
+                    Email = "adminemail@smth.com"
+                }).Wait();
+                userManager.AddPasswordAsync(userManager.FindByEmailAsync("adminemail@smth.com").Result, "AdminPass1").Wait();
+            }
 
             if (env.IsDevelopment())
             {

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MuNyi.Bll.Services
 {
-    class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly MuNyiContext context;
         private readonly UserManager<User> userManager;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MuNyi.Bll.ServiceInterfaces
 {
-    public interface IUserController
+    public interface IUserService
     {
         public Task<List<UserDto>> GetAllUsers();
     }

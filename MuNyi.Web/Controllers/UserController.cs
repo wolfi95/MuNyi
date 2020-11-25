@@ -21,9 +21,9 @@ namespace MuNyi.Web.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IConfiguration configuration;
-        private readonly IUserController userController;
+        private readonly IUserService userController;
 
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, IUserController userController)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, IUserService userController)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
