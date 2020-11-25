@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using MuNyi.Bll.ServiceInterfaces;
 using MuNyi.Dal.Entities.Authentication;
 using MuNyi.Dto;
 using MuNyi.Web.Authentication;
@@ -20,12 +21,21 @@ namespace MuNyi.Web.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IConfiguration configuration;
+        private readonly IUserController userController;
 
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, IUserController userController)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.configuration = configuration;
+            this.userController = userController;
+        }
+
+        [HttpGet]       
+        [Authorize(Roles = UserRoles.Administrator)]
+        public async Task<List<UserDto>> GetAllUsers()
+        {
+            return await userController.GetAllUsers();
         }
 
         [HttpPost]

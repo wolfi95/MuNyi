@@ -10,6 +10,6 @@ namespace MuNyi.Dto
         public double Time { get; set; }
         public string Comment { get; set; }
         public string CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }        
+        public DateTime CreatedDate { get; set; }
     }
 }
