@@ -25,6 +25,7 @@ namespace MuNyi.Dal
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             base.OnConfiguring(builder);
+            builder.UseMySQL("server=localhost;database=MuNyiContext");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
