@@ -32,7 +32,7 @@ namespace MuNyi.Bll.Services
             {
                 Comment = newWorkItemData.Comment,
                 CreatedBy = user,
-                CreatedDate = DateTime.Now,
+                CreatedDate = newWorkItemData.Date ?? DateTime.Now,
                 TaskId = id,
                 Time = newWorkItemData.Time
             });

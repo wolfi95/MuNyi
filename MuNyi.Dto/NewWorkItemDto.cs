@@ -8,5 +8,6 @@ namespace MuNyi.Dto
     {
         public double Time { get; set; }
         public string Comment { get; set; }
+        public DateTime? Date { get; set; }
     }
 }
