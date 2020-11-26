@@ -39,6 +39,26 @@ namespace MuNyi.Bll.Services
             await context.SaveChangesAsync();
         }
 
+        public async Task UpdateTaskAsync(Guid projectId, Guid taskId, NewTaskDto newTask, User user)
+        {
+            var proj = await context.Projects.FirstOrDefaultAsync(x => x.Id == projectId);
+            if (proj == null)
+            {
+                throw new ArgumentException("Nem található projekt ilyen azonosítóval");
+            }
+
+            var task = await context.Tasks.FirstOrDefaultAsync(x => x.Id == taskId);
+            if(task == null)
+            {
+                throw new ArgumentException("Nem található feladat.");
+            }
+
+            task.Name = newTask.Name;
+            task.Description = newTask.Description;
+
+            await context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<TaskDto>> GetAllTasksAsync(Guid projectId)
         {
             var proj = await context.Projects.Include(x => x.CreatedBy).FirstOrDefaultAsync(x => x.Id == projectId);

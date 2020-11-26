@@ -10,6 +10,7 @@ namespace MuNyi.Bll.ServiceInterfaces
     public interface IProjectService
     {
         public Task CreateNewProjectAsync(NewProjectDto newProject, User user);
+        public Task UpdateProjectAsync(Guid projId, NewProjectDto newProject, User user);
         public Task<IEnumerable<ProjectDto>> GetAllProjectsAsync();
         public Task<IEnumerable<ProjectDto>> SearchProjectsAsync(SearchProjectDto searchData);
         public Task DeleteProject(Guid Id);

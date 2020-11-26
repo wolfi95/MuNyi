@@ -46,6 +46,24 @@ namespace MuNyi.Web.Controllers
             await taskService.CreateNewTaskAsync(projectId, newTaskData, user);
         }
 
+        [HttpPut]
+        [Route("{taskId}")]
+        public async Task UpdateTask([FromRoute] Guid taskId, [FromRoute] Guid projectId, NewTaskDto newTaskData)
+        {
+            if (projectId == Guid.Empty)
+            {
+                throw new ArgumentNullException("Projekt azonosító nem lehet üres");
+            }
+
+            if (String.IsNullOrEmpty(newTaskData.Name))
+            {
+                throw new ArgumentNullException("Feladat neve nem lehet üres!");
+            }
+            var user = await userManager.FindByEmailAsync(User.Claims.First(x => x.Type == ClaimTypes.Email).Value);
+
+            await taskService.UpdateTaskAsync(projectId, taskId, newTaskData, user);
+        }
+
         [HttpGet]
         public async Task<IEnumerable<TaskDto>> GetAllTasks([FromRoute] Guid projectId)
         {

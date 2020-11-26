@@ -42,6 +42,22 @@ namespace MuNyi.Web.Controllers
             await projectService.CreateNewProjectAsync(newProjectDto, user);
         }
 
+        [HttpPut]
+        [Route("{projectId}")]
+        public async Task UpdateProject([FromRoute] Guid projectId, [FromBody] NewProjectDto newProjectDto)
+        {
+            if (String.IsNullOrEmpty(newProjectDto.ProjectName))
+            {
+                throw new ArgumentNullException("Projekt neve nem lehet üres!");
+            }
+            var user = await userManager.FindByEmailAsync(User.Claims.First(x => x.Type == ClaimTypes.Email).Value);
+            if (!(await userManager.IsInRoleAsync(user, UserRoles.Administrator)))
+            {
+                throw new ArgumentException("Unauthorized acces.");
+            }
+            await projectService.UpdateProjectAsync(projectId, newProjectDto, user);
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IEnumerable<ProjectDto>> GetAllProjects()

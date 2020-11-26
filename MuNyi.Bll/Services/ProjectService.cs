@@ -37,6 +37,20 @@ namespace MuNyi.Bll.Services
             await context.SaveChangesAsync();
         }
 
+        public async System.Threading.Tasks.Task UpdateProjectAsync(Guid projId, NewProjectDto newProject, User user)
+        {
+            var project = await context.Projects.FirstOrDefaultAsync(x => x.Id == projId);
+            if(project == null)
+            {
+                throw new ArgumentException("Nem létező projekt.");
+            }
+
+            project.Name = newProject.ProjectName;
+            project.Description = newProject.ProjectDescription;            
+
+            await context.SaveChangesAsync();
+        }
+
         public async System.Threading.Tasks.Task DeleteProject(Guid Id)
         {
             var proj = context.Projects.Include(x => x.Tasks).ThenInclude(y => y.WorkItems).FirstOrDefault(x => x.Id == Id);

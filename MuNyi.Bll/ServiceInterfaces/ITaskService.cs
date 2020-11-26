@@ -10,6 +10,7 @@ namespace MuNyi.Bll.ServiceInterfaces
     public interface ITaskService
     {
         public Task CreateNewTaskAsync(Guid projectId, NewTaskDto newTask, User user);
+        public Task UpdateTaskAsync(Guid projectId, Guid taskId, NewTaskDto newTask, User user);
         public Task<IEnumerable<TaskDto>> GetAllTasksAsync(Guid projectId);
         public Task<IEnumerable<TaskDto>> SearchTasksAsync(Guid projectId, SearchTaskDto searchData);
         public Task DeleteTask(Guid projectId, Guid Id);
