@@ -39,7 +39,7 @@ namespace MuNyi.Bll.Services
 
         public async System.Threading.Tasks.Task DeleteProject(Guid Id)
         {
-            var proj = context.Projects.Include(x => x.Tasks.Select(y => y.WorkItems)).FirstOrDefault(x => x.Id == Id);
+            var proj = context.Projects.Include(x => x.Tasks).ThenInclude(y => y.WorkItems).FirstOrDefault(x => x.Id == Id);
 
             if (proj == null)
             {
@@ -77,7 +77,7 @@ namespace MuNyi.Bll.Services
 
         public async Task<ProjectDetailDto> GetProjectByIdAsync(Guid id)
         {
-            var project = await context.Projects.Include(x => x.Tasks.Select(y => y.WorkItems)).Include(x => x.CreatedBy).FirstOrDefaultAsync(x => x.Id == id);
+            var project = await context.Projects.Include(x => x.Tasks).ThenInclude(y => y.WorkItems).Include(x => x.CreatedBy).FirstOrDefaultAsync(x => x.Id == id);
             if (project == null)
             {
                 throw new ArgumentException("Nem található projekt.");
@@ -112,7 +112,7 @@ namespace MuNyi.Bll.Services
 
         public async Task<double> GetProjectWorkAsync(Guid id)
         {
-            var project = await context.Projects.Include(x => x.Tasks.Select(y => y.WorkItems)).FirstOrDefaultAsync(x => x.Id == id);
+            var project = await context.Projects.Include(x => x.Tasks).ThenInclude(y => y.WorkItems).FirstOrDefaultAsync(x => x.Id == id);
             if (project == null)
             {
                 throw new ArgumentException("Nem található projekt.");

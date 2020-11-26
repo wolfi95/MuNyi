@@ -58,7 +58,7 @@ namespace MuNyi.Bll.Services
 
         public async Task<IEnumerable<WorkDto>> GetTaskWorkItemsAsync(Guid projectId, Guid id)
         {
-            var task = await context.Tasks.Include(x => x.WorkItems.Select(y => y.CreatedBy)).FirstOrDefaultAsync(x => x.ProjectId == projectId && x.Id == id);
+            var task = await context.Tasks.Include(x => x.WorkItems).ThenInclude(y => y.CreatedBy).FirstOrDefaultAsync(x => x.ProjectId == projectId && x.Id == id);
             if(task == null)
             {
                 throw new ArgumentException("A projekten nem található feladat ezzel az azonosítóval.");
