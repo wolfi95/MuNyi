@@ -95,14 +95,21 @@ namespace MuNyi.Web
             if (!roleManager.RoleExistsAsync(UserRoles.Administrator).Result)
                 roleManager.CreateAsync(new IdentityRole { Name = UserRoles.Administrator }).Wait();
 
-
-            if(!(userManager.FindByEmailAsync("adminemail@smth.com").Result == null))
+            var user = userManager.FindByEmailAsync("adminemail@smth.com");
+            user.Wait();
+            if (user.Result == null)
             {
-                userManager.CreateAsync(new User
+               var cu = userManager.CreateAsync(new User
                 {
-                    Email = "adminemail@smth.com"
-                }).Wait();
-                userManager.AddPasswordAsync(userManager.FindByEmailAsync("adminemail@smth.com").Result, "AdminPass1").Wait();
+                    Email = "adminemail@smth.com",
+                    UserName = "adminemail@smth.com",
+                    Name = "Admin1"
+                });
+                cu.Wait();               
+                var u = userManager.FindByEmailAsync("adminemail@smth.com");
+                u.Wait();
+                userManager.AddPasswordAsync(u.Result, "AdminPass1").Wait();
+                userManager.AddToRoleAsync(u.Result, UserRoles.Administrator).Wait();
             }
 
             if (env.IsDevelopment())
