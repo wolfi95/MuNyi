@@ -71,9 +71,9 @@ namespace MuNyi.Web
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-                    ValidateIssuer = true,
+                    ValidateIssuer = false,
                     ValidIssuer = Configuration["Jwt:Issuer"],
-                    ValidateAudience = true,
+                    ValidateAudience = false,
                     ValidAudience = Configuration["Jwt:Issuer"],
                     ClockSkew = TimeSpan.Zero // remove delay of token when expire
                 };

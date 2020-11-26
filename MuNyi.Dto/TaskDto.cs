@@ -11,5 +11,6 @@ namespace MuNyi.Dto
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
+        public Guid ProjectId { get; set; }
     }
 }

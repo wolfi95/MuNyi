@@ -64,7 +64,7 @@ namespace MuNyi.Bll.Services
                 throw new ArgumentException("A projekten nem található feladat ezzel az azonosítóval.");
             }
 
-            return task.WorkItems.Select(x => new WorkDto { CreatedBy = x.CreatedBy.Name, Comment = x.Comment, CreatedDate = x.CreatedDate, Id = x.Id, Time = x.Time}).ToList();
+            return task.WorkItems.Select(x => new WorkDto { CreatedBy = x.CreatedBy.Name, Comment = x.Comment, CreatedDate = x.CreatedDate, Id = x.Id, Time = x.Time, TaskId = x.TaskId}).ToList();
         }
 
         public async Task<IEnumerable<WorkDto>> SearchTaskWorkItemsAsync(Guid projectId, Guid id, SearchWorkItemDto searchData)
@@ -133,7 +133,8 @@ namespace MuNyi.Bll.Services
                 CreatedDate = x.CreatedDate,
                 Comment = x.Comment,
                 Time = x.Time,
-                Id = x.Id
+                Id = x.Id,
+                TaskId = x.TaskId
             }).ToListAsync();
         }
     }

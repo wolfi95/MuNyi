@@ -13,5 +13,6 @@ namespace MuNyi.Dto
         public UserDto CreatedBy { get; set; }
         public IEnumerable<WorkDto> WorkItems { get; set; }
         public double LoggedHours { get; set; }
+        public Guid ProjectId { get; set; }
     }
 }

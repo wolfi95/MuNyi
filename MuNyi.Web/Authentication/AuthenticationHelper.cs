@@ -13,11 +13,11 @@ namespace MuNyi.Web.Authentication
 {
     public static class AuthenticationHelper
     {
-        public static string GenerateJwtToken(User user, IConfiguration configuration)
+        public static string GenerateJwtToken(User user, string role, IConfiguration configuration)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserName)
+                new Claim(ClaimTypes.Email, user.Email),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));

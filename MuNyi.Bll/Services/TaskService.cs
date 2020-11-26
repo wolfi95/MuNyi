@@ -53,7 +53,8 @@ namespace MuNyi.Bll.Services
                 Name = x.Name,
                 CreatedDate = x.CreatedDate,
                 Description = x.Description,
-                Id = x.Id
+                Id = x.Id,
+                ProjectId = x.ProjectId
             }).ToListAsync();
         }
 
@@ -135,7 +136,8 @@ namespace MuNyi.Bll.Services
                 CreatedDate = x.CreatedDate,
                 Description = x.Description,
                 Id = x.Id,
-                Name = x.Name
+                Name = x.Name,
+                ProjectId = x.ProjectId
             }).ToListAsync();
         }
 
@@ -185,7 +187,8 @@ namespace MuNyi.Bll.Services
                 CreatedDate = task.CreatedDate,
                 Description = task.Description,
                 LoggedHours = task.WorkItems.Sum(x => x.Time),
-                WorkItems = task.WorkItems.Select(x => new WorkDto { CreatedDate = x.CreatedDate, Comment = x.Comment, CreatedBy = x.CreatedBy.Name, Id = x.Id, Time = x.Time })
+                WorkItems = task.WorkItems.Select(x => new WorkDto { CreatedDate = x.CreatedDate, Comment = x.Comment, CreatedBy = x.CreatedBy.Name, Id = x.Id, Time = x.Time }),
+                ProjectId = task.ProjectId
             };
         }
 

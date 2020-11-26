@@ -8,13 +8,14 @@ using MuNyi.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MuNyi.Web.Controllers
 {
     [Route("project")]
     [ApiController]
-    [Authorize(Roles = UserRoles.Administrator)]
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly IProjectService projectService;
@@ -28,12 +29,17 @@ namespace MuNyi.Web.Controllers
 
         [HttpPost]
         public async Task NewProject([FromBody] NewProjectDto newProjectDto)
-        {
+        {            
             if (String.IsNullOrEmpty(newProjectDto.ProjectName))
             {
                 throw new ArgumentNullException("Projekt neve nem lehet üres!");
             }
-            await projectService.CreateNewProjectAsync(newProjectDto, (await userManager.GetUserAsync(User)));
+            var user = await userManager.FindByEmailAsync(User.Claims.First(x => x.Type == ClaimTypes.Email).Value);
+            if(!(await userManager.IsInRoleAsync(user, UserRoles.Administrator)))
+            {
+                throw new ArgumentException("Unauthorized acces.");
+            }
+            await projectService.CreateNewProjectAsync(newProjectDto, user);
         }
 
         [HttpGet]
@@ -64,7 +70,13 @@ namespace MuNyi.Web.Controllers
         [Route("{id}/delete")]
         public async Task DeleteProject([FromRoute] Guid id)
         {
-            if(id == Guid.Empty)
+            var user = await userManager.FindByEmailAsync(User.Claims.First(x => x.Type == ClaimTypes.Email).Value);
+            if (!(await userManager.IsInRoleAsync(user, UserRoles.Administrator)))
+            {
+                throw new ArgumentException("Unauthorized acces.");
+            }
+
+            if (id == Guid.Empty)
             {
                 throw new ArgumentNullException("Id nem lehet üres");
             }

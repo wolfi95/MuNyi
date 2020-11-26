@@ -11,5 +11,6 @@ namespace MuNyi.Dto
         public string Comment { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
+        public Guid TaskId { get; set; }
     }
 }

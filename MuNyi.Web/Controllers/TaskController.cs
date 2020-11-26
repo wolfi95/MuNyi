@@ -8,12 +8,14 @@ using MuNyi.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MuNyi.Web.Controllers
 {
     [Route("{projectId}/task")]
     [ApiController]
+    [Authorize]
     public class TaskController : Controller
     {
         private readonly ITaskService taskService;
@@ -39,8 +41,9 @@ namespace MuNyi.Web.Controllers
             {
                 throw new ArgumentNullException("Feladat neve nem lehet üres!");
             }
+            var user = await userManager.FindByEmailAsync(User.Claims.First(x => x.Type == ClaimTypes.Email).Value);            
 
-            await taskService.CreateNewTaskAsync(projectId, newTaskData, (await userManager.GetUserAsync(User)));
+            await taskService.CreateNewTaskAsync(projectId, newTaskData, user);
         }
 
         [HttpGet]
@@ -76,11 +79,9 @@ namespace MuNyi.Web.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}/delete")]
-        [Authorize(Roles = UserRoles.Administrator)]
-        public async Task DeleteProject([FromRoute]Guid projectId, [FromRoute] Guid id)
+        [Route("{id}/delete")]        
+        public async Task DeleteTask([FromRoute]Guid projectId, [FromRoute] Guid id)
         {
-
             if (projectId == Guid.Empty)
             {
                 throw new ArgumentNullException("Projekt azonosító nem lehet üres");
@@ -172,7 +173,9 @@ namespace MuNyi.Web.Controllers
                 throw new ArgumentNullException("A feladat azonosítója nem lehet üres.");
             }
 
-            await workService.CreateNewWorkItem(projectId, id, newWorkItemData, (await userManager.GetUserAsync(User)));
+            var user = await userManager.FindByEmailAsync(User.Claims.First(x => x.Type == ClaimTypes.Email).Value);            
+
+            await workService.CreateNewWorkItem(projectId, id, newWorkItemData, user);
         }
 
         [HttpDelete]
@@ -192,7 +195,9 @@ namespace MuNyi.Web.Controllers
                 throw new ArgumentNullException("A munkaidő azonosítója nem lehet üres.");
             }
 
-            await workService.DeleteWorkItem(projectId, id, workId, (await userManager.GetUserAsync(User)));
+            var user = await userManager.FindByEmailAsync(User.Claims.First(x => x.Type == ClaimTypes.Email).Value);
+
+            await workService.DeleteWorkItem(projectId, id, workId, user);
         }
     }
 }

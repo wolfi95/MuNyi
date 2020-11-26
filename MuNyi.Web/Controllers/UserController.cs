@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,10 +32,15 @@ namespace MuNyi.Web.Controllers
             this.userController = userController;
         }
 
-        [HttpGet]       
-        [Authorize(Roles = UserRoles.Administrator)]
+        [HttpGet]               
         public async Task<List<UserDto>> GetAllUsers()
         {
+            var user = await userManager.FindByEmailAsync(User.Claims.First(x => x.Type == ClaimTypes.Email).Value);
+            if (!(await userManager.IsInRoleAsync(user, UserRoles.Administrator)))
+            {
+                throw new ArgumentException("Unauthorized acces.");
+            }
+
             return await userController.GetAllUsers();
         }
 
@@ -56,8 +62,8 @@ namespace MuNyi.Web.Controllers
             var result = await signInManager.PasswordSignInAsync(loginData.Email, loginData.Password, false, false);
             if (result.Succeeded)
             {
-                var token = AuthenticationHelper.GenerateJwtToken(user, configuration);
                 var role = await userManager.IsInRoleAsync(user, UserRoles.Administrator) ? "Admin" : "User";
+                var token = AuthenticationHelper.GenerateJwtToken(user, role, configuration);
                 var res = new UserDataResponse
                 {
                     UserId = user.Id,
