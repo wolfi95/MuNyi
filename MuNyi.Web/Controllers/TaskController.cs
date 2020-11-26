@@ -196,6 +196,28 @@ namespace MuNyi.Web.Controllers
             await workService.CreateNewWorkItem(projectId, id, newWorkItemData, user);
         }
 
+        [HttpPut]
+        [Route("{id}/workItems/{workId}")]
+        public async Task UpdateWorkItem([FromRoute] Guid projectId, [FromRoute] Guid id,[FromRoute] Guid workId, NewWorkItemDto newWorkItemData)
+        {
+            if (projectId == Guid.Empty)
+            {
+                throw new ArgumentNullException("Projekt azonosító nem lehet üres");
+            }
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException("A feladat azonosítója nem lehet üres.");
+            }
+            if (workId == Guid.Empty)
+            {
+                throw new ArgumentNullException("A munka azonosítója nem lehet üres.");
+            }
+
+            var user = await userManager.FindByEmailAsync(User.Claims.First(x => x.Type == ClaimTypes.Email).Value);
+
+            await workService.UpdateWorkItem(projectId, id, workId, newWorkItemData, user);
+        }
+
         [HttpDelete]
         [Route("{id}/workItems/{workId}")]
         public async Task DeleteWorkItem([FromRoute] Guid projectId, [FromRoute] Guid id, [FromRoute]Guid workId)
