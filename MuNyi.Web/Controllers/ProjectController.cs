@@ -27,7 +27,7 @@ namespace MuNyi.Web.Controllers
         }
 
         [HttpPost]
-        public async Task NewProject(NewProjectDto newProjectDto)
+        public async Task NewProject([FromBody] NewProjectDto newProjectDto)
         {
             if (String.IsNullOrEmpty(newProjectDto.ProjectName))
             {

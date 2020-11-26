@@ -124,6 +124,7 @@ namespace MuNyi.Web.Controllers
                 }
                 return new BadRequestObjectResult(msg);
             }
+            await userManager.AddToRoleAsync(newUser, UserRoles.User);
 
             return new OkResult();
 
