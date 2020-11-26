@@ -57,11 +57,13 @@ namespace MuNyi.Web.Controllers
             if (result.Succeeded)
             {
                 var token = AuthenticationHelper.GenerateJwtToken(user, configuration);
+                var role = await userManager.IsInRoleAsync(user, UserRoles.Administrator) ? "Admin" : "User";
                 var res = new UserDataResponse
                 {
                     UserId = user.Id,
                     Token = token,
-                    Name = user.Name
+                    Name = user.Name,
+                    Role = role
                 };
                 return new OkObjectResult(res);
             }
