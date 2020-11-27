@@ -169,7 +169,7 @@ namespace MuNyi.Bll.Services
                 throw new ArgumentException("Nem található projekt ilyen azonosítóval");
             }
 
-            var task = await context.Tasks.FirstOrDefaultAsync(x => x.Id == Id && x.ProjectId == projectId);
+            var task = await context.Tasks.Include(x => x.WorkItems).FirstOrDefaultAsync(x => x.Id == Id && x.ProjectId == projectId);
             if(task == null)
             {
                 throw new ArgumentException("Nem található feladat ilyen azonosítóval");
