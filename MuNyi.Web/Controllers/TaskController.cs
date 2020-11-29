@@ -158,7 +158,7 @@ namespace MuNyi.Web.Controllers
             return await workService.GetTaskWorkItemsAsync(projectId, id);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("{id}/workItems/search")]
         public async Task<PagedData<WorkDto>> SearchTaskWorkItems([FromRoute] Guid projectId, [FromRoute] Guid id, SearchWorkItemDto searchData)
         {
