@@ -67,14 +67,11 @@ namespace MuNyi.Bll.Services
                     context.WorkItems.RemoveRange(task.WorkItems);
                 }
                 context.Tasks.RemoveRange(proj.Tasks);
-                context.Remove(proj);
-
+                context.Projects.Remove(proj);
                 await context.SaveChangesAsync();
+
                 transation.Commit();
             }
-
-            context.Projects.Remove(proj);
-            await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ProjectDto>> GetAllProjectsAsync()
